@@ -1,0 +1,22 @@
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<script src="/static/script0001.js">
+</script>
+<title>Just-9</title>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<span id="logo" onclick="document.location='/';" class="logo">Just-9</span>&nbsp;&nbsp;
+{% if user.name %}Hello {{ user.name }}!{% else %}Hello!{% endif %}
+&nbsp;&nbsp;&nbsp;<a href="/">home</a> |
+ {% if user.name %}<a href="/u/{{user.name}}">profile</a> | {% endif %}<a href="{{ user_url }}">{{user_url_label}}</a>
+<br><br>
+{% block bodycontent %}
+{% endblock %}
+<br><br><br>
+<div id="tagline">&gt; It's 9 character microblogging. That's almost 5x better than 2 letters.</div>
+<div id="dialog" onclick="hide('dialog');"></div>
+<div id="popup" onclick="hide('popup');"><div id="popup-header">&nbsp;</div><div id="popup-content"></div></div>
+</body>
+</html>

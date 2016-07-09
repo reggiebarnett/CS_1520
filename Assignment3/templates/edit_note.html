@@ -1,0 +1,92 @@
+<html>
+	<head>
+		<script>
+			function editTitle(){
+				document.getElementById("currenttitle").style.display = 'none';
+				document.getElementById("edittitle").style.display = 'block';
+			}
+			function saveTitle() {
+				var inputTitle = document.getElementById("title");
+				var xmlHttp = new XMLHttpRequest();
+				var newTitle = "";
+				if(inputTitle) {
+					newTitle = inputTitle.value;
+					
+					var note_id = document.getElementById("note_id");
+					xmlHttp.open("POST", '/savetitle', true);
+					xmlHttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+					xmlHttp.send('title='+newTitle+'&id='+note_id.value);
+				}
+
+				xmlHttp.onreadystatechange = function() {
+					if (xmlHttp.readyState == 4) {
+						var response = xmlHttp.responseText;
+						var splitResponse = response.split("|");
+
+						document.getElementById("title").innerHTML = " " + splitResponse[0];
+						document.getElementById("date").innerHTML = " " + splitResponse[1];
+						document.getElementById("datesaved").innerHTML = " " + splitResponse[1];
+						document.getElementById("timesaved").innerHTML = " " + splitResponse[2];
+						document.getElementById("currenttitle").style.display = 'block';
+						document.getElementById("edittitle").style.display = 'none';
+					}
+				}			
+			}
+			function saveNotes(){
+				var note_text = "";
+				note_text = document.getElementById("notes");
+				var note_id = document.getElementById("note_id");
+				
+				var xmlHttp = new XMLHttpRequest();
+				
+				xmlHttp.open("POST", '/savenotes', true);
+				xmlHttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+				xmlHttp.send('body='+note_text.value+'&id='+note_id.value);
+				window.location.assign("../notes");
+			}
+			//Autosaving
+			setInterval(function() {
+				var body = "";
+				note_text = document.getElementById("notes");
+				var note_id = document.getElementById("note_id");
+				var xmlHttp = new XMLHttpRequest();
+				
+				xmlHttp.open("POST", '/savenotes', true);
+				xmlHttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+				xmlHttp.send('body='+note_text.value+'&id='+note_id.value);
+				xmlHttp.onreadystatechange = function() {
+					if (xmlHttp.readyState == 4) {
+						var response = xmlHttp.responseText;
+						var splitResponse = response.split("|");
+						document.getElementById("date").innerHTML = " " + splitResponse[0];
+						document.getElementById("datesaved").innerHTML = " " + splitResponse[0];
+						document.getElementById("timesaved").innerHTML = " " + splitResponse[1];
+					}
+				}
+			}, 10000);		
+		</script>
+	</head>
+	<body>
+		<textarea id="note_id" name="note_id" style="display: none;">{{note_id}}</textarea>
+		<div id="titlediv">
+			<div id="currenttitle">
+				<h2 id="date" style="display: inline;">{{date}}</h2><h2 id="title" style="display: inline;">: {{subject}}</h2>
+				</br>
+				<a href="javascript:void(0)" onClick="editTitle();">Edit Title</a>
+			</div>
+			<div id="edittitle">
+				<input type="text" id="title" value="{{subject}}">
+				<input type="button" value="Save Title" onClick="saveTitle();">
+			</div>
+			
+			<i>last saved at <p id="datesaved" style="display: inline;">{{date}}</p> <p id="timesaved" style="display: inline;">{{time}}</p></p>
+		</div>
+		<div id="body">
+			<textarea id="notes" name="notes" rows="30" cols="50">
+				{{note_text}}
+			</textarea>
+			</br>
+			<input type="button" value="Save" onClick="saveNotes();">
+		</div>
+	</body>
+</html>

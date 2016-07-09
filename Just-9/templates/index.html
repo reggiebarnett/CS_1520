@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block bodycontent %}
+{% if user.name %}
+<input type="text" id="message" maxlength="{{count}}" onkeydown="if (event.keyCode == 13) sendMessage();"><input type="button" value="send" onclick="sendMessage();"><br><br>
+{% else %}
+{% if user %}
+choose username to post:<br>
+<input type="text" id="username" maxlength="128"><input type="button" value="send" onclick="sendUsername();"><br>
+<i>your username can be up to 128 lower-case letters, numbers, underscores, or hyphens</i><br><br>
+{% endif %}
+{% endif %}
+<div id="posts"></div>
+<br><br>Showing posts by:<br>
+<div id="users"></div>
+<script>
+loadLoop();
+</script>
+{% endblock %}

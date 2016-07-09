@@ -1,0 +1,4 @@
+cron:
+- description: reset quotas
+  url: /crontasks/reset
+  schedule: every 3 minutes

@@ -1,0 +1,20 @@
+application: just-9
+version: 1
+runtime: python27
+api_version: 1
+threadsafe: no
+
+handlers:
+- url: /crontasks/.*
+  script: crontask.app
+  login: admin
+
+- url: /static
+  static_dir: static
+
+- url: /u/.*
+  script: code.app
+  
+- url: /.*
+  script: code.app
+  

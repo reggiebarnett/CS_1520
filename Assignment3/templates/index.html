@@ -1,0 +1,12 @@
+<html>
+	<head>
+	</head>
+	<body>
+		{% if user %}
+			Welcome {{user.email}}</br>
+			<a href="/notes">View Notes</a> | <a href="{{logout}}">Logout</a>
+		{% else %}
+			<a href="{{login}}">Click here to log in</a>
+		{% endif %}
+	</body>
+</html>
